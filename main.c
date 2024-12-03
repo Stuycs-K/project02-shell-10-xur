@@ -29,16 +29,51 @@ int main(){
         if (strcmp(buffer, "exit") == 0) {
             break;
         }
-        char * args[16];
-        parse_args(buffer, args);
-        int counter = 0;
-        while (args[counter]) {
-            if (!strcmp(args[counter], "|")) {
-                printf("hi\n");
+
+        //semicolon check
+        int semicolcounter = 0;
+        int i = 0;
+        while (buffer[i]) {
+            if (buffer[i]==';') {
+                semicolcounter++;
             }
-            counter++;
         }
-        execute(args[0], args);
+        if (semicolcounter) {
+            char * token = NULL;
+            char * buffsemicolon[semicolcounter+2];
+            int i2 = 0;
+            while ((token = strsep(&buffer, ";"))) {
+                buffsemicolon[i2] = token;
+                i2++;
+            } 
+            buffsemicolon[i2] = NULL;
+            i2 = 0;
+            while (buffsemicolon[i2]) {
+                char * args[16];
+                parse_args(buffsemicolon[i2], args);
+                int counter = 0;
+                while (args[counter]) {
+                    if (!strcmp(args[counter], "|")) {
+                        printf("hi\n");
+                    }
+                    counter++;
+                }
+                execute(args[0], args);
+            }
+        }
+        else {
+            //for space separation
+            char * args[16];
+            parse_args(buffer, args);
+            int counter = 0;
+            while (args[counter]) {
+                if (!strcmp(args[counter], "|")) {
+                    printf("hi\n");
+                }
+                counter++;
+            }
+            execute(args[0], args);
+        }
     }
     return 0;
 }
