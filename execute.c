@@ -26,7 +26,6 @@ void execute(char * cmd, char ** args) {
         }
         else if (!p) { //child
             if (execvp(cmd, args)==-1) {
-                printf("culprit\n");
                 printerror();
             }
         } 

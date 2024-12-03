@@ -22,8 +22,13 @@ int main(){
         printf("\n%s/ $ ", cwd);
         fflush(stdout);
         char buffer[100];
-        fgets(buffer, sizeof(buffer), stdin);
+        if (fgets(buffer, sizeof(buffer), stdin)==NULL) {
+            break;
+        }
         buffer[strcspn(buffer, "\n")] = '\0';
+        if (strcmp(buffer, "exit") == 0) {
+            break;
+        }
         char * args[16];
         parse_args(buffer, args);
         int counter = 0;
@@ -35,4 +40,5 @@ int main(){
         }
         execute(args[0], args);
     }
+    return 0;
 }
