@@ -36,7 +36,9 @@ int main(){
         while (buffer[i]) {
             if (buffer[i]==';') {
                 semicolcounter++;
+                printf("%d\n", semicolcounter);
             }
+            i++;
         }
         if (semicolcounter) {
             char * token = NULL;
