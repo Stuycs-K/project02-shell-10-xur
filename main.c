@@ -26,8 +26,9 @@ int main(){
             break;
         }
         buffer[strcspn(buffer, "\n")] = '\0';
+        printf("i see %s\n", buffer);
         if (strcmp(buffer, "exit") == 0) {
-            break;
+            break; //weird behavior where if errno2 occurs, must type exit twice to exit. tried printing to debug but doesnt help.
         }
 
         //semicolon check
@@ -36,7 +37,6 @@ int main(){
         while (buffer[i]) {
             if (buffer[i]==';') {
                 semicolcounter++;
-                printf("%d\n", semicolcounter);
             }
             i++;
         }
@@ -44,7 +44,8 @@ int main(){
             char * token = NULL;
             char * buffsemicolon[semicolcounter+2];
             int i2 = 0;
-            while ((token = strsep(&buffer, ";"))) {
+            char * tb = buffer;
+            while ((token = strsep(&tb, ";"))) {
                 buffsemicolon[i2] = token;
                 i2++;
             } 
@@ -61,6 +62,7 @@ int main(){
                     counter++;
                 }
                 execute(args[0], args);
+                i2++;
             }
         }
         else {
