@@ -3,13 +3,9 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
+#include <dirent.h>
+#include <fcntl.h>
 #include "execute.h"
-
-int printerror(){
-  printf("error number %d\n",errno);
-  printf("error: %s\n", strerror(errno));
-  return 0;
-}
 
 void parse_args( char * line, char ** arg_ary ) {
     char * token = NULL;
@@ -41,8 +37,8 @@ int main(){
         }
         buffer[strcspn(buffer, "\n")] = '\0';
         if (strcmp(buffer, "exit") == 0) {
-            printf("i see %s\n", buffer); //debug
-            printascii(buffer); //debug
+            //printf("i see %s\n", buffer); //debug
+            //printascii(buffer); //debug
             break; //weird behavior where if errno2 occurs, must type exit twice to exit. tried printing to debug but doesnt help.
         }
 
@@ -74,49 +70,31 @@ int main(){
                 while (args[counter]) {
                     if (!strcmp(args[counter], "<")) {
                         redir++;
-                        if (!args[counter+1]) {
-                            printf("Failed redirect stdin\n");
-                            break;
-                        }
-                        else {
+                            if (!args[counter+1]) {
+                                printf("Failed redirect stdin\n");
+                                break;
+                            }
+                            else {
+                                printf("Redirecting stdin to file: %s\n", args[counter + 1]); // debug
                             int f = open(args[counter+1], O_RDONLY);
                             if (f==-1) {
                                 printerror();
                                 break;
                             }
-                            int stdin = STDIN_FILENO;
-                            int stdin2 = dup(stdin);
-                            dup2(f, stdin);
-                            char buffer2[100];
-                            if (fgets(buffer2, sizeof(buffer2), stdin)==NULL) {
-                                break;
-                            }
-                            buffer2[strcspn(buffer2, "\n")] = '\0';
-                            if (strcmp(buffer2, "exit") == 0) {
-                                printf("i see %s\n", buffer2); //debug
-                                printascii(buffer2); //debug
-                                break; //weird behavior where if errno2 occurs, must type exit twice to exit. tried printing to debug but doesnt help.
-                            }
-                            char * args2[16];
-                            parse_args(buffer2, args2);
-                            int counter = 0;
-                            while (args2[counter]) {
-                                /*if (!strcmp(args2[counter], "|")) {
-                                    printf("hi\n");
-                                }*/
-                                counter++;
-                            }
-                            execute(args2[0], args2);
-                            fflush(stdin);//not needed when a child process exits, becaue exiting a process will flush automatically.
-                            dup2(stdin2, stdin); //sets the stdout entry to backup_stdout, which is the original stdout
+                            int stdin_backup = dup(STDIN_FILENO);
+                            dup2(f, STDIN_FILENO);
+                            args[counter] = NULL;
+                            execute(args[0], args);
+                            dup2(stdin_backup, STDIN_FILENO);
+                            close(stdin_backup);
+                            close(f);
                         }
                     }
-                    /*if (!strcmp(args[counter], "|")) {
-                        printf("hi\n");
-                    }*/
                     counter++;
                 }
-                execute(args[0], args);
+                if (!redir) {
+                    execute(args[0], args);
+                }
                 i2++;
             }
         }
@@ -125,13 +103,35 @@ int main(){
             char * args[16];
             parse_args(buffer, args);
             int counter = 0;
+            int redir = 0;
             while (args[counter]) {
-                /*if (!strcmp(args[counter], "|")) {
-                    printf("hi\n");
-                }*/
+                if (!strcmp(args[counter], "<")) {
+                    redir++;
+                    if (!args[counter+1]) {
+                        printf("Failed redirect stdin\n");
+                        break;
+                    }
+                    else {
+                        printf("Redirecting stdin to file: %s\n", args[counter + 1]); // debug
+                        int f = open(args[counter+1], O_RDONLY);
+                        if (f==-1) {
+                            printerror();
+                            break;
+                        }
+                        int stdin_backup = dup(STDIN_FILENO);
+                        dup2(f, STDIN_FILENO);
+                        args[counter] = NULL;
+                        execute(args[0], args);
+                        dup2(stdin_backup, STDIN_FILENO);
+                        close(stdin_backup);
+                        close(f);
+                    } 
+                }
                 counter++;
             }
-            execute(args[0], args);
+            if (!redir) {
+                execute(args[0], args);
+            }
         }
     }
     return 0;
