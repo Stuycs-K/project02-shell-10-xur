@@ -12,10 +12,13 @@ int printerror(){
 
 void execute(char * cmd, char ** args) {
     if (!strcmp(cmd, "cd")) {
+        char * home = getenv("HOME");
         if (!args[1]) {
-            printf("Missing cd argument");
+            if (chdir(home)==-1) {
+                printerror();
+            }
         }
-        if (chdir(args[1])==-1) {
+        else if (chdir(args[1])==-1) {
             printerror();
         }
     }
