@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include "execute.h"
 #include "redirin.h"
+#include "redirout.h"
 
 void parse_args( char * line, char ** arg_ary ) {
     char * token = NULL;
@@ -79,6 +80,17 @@ int main(){
                             redirin(args, counter);
                         }
                     }
+                    if (!strcmp(args[counter], ">")) {
+                        printf("i see >\n");
+                        redir++;
+                        if (!args[counter+1]) {
+                            printf("Failed redirect stdout\n");
+                            break;
+                        }
+                        else {
+                            redirout(args, counter);
+                        }
+                    }
                     counter++;
                 }
                 if (!redir) {
@@ -103,6 +115,17 @@ int main(){
                     else {
                         redirin(args, counter);
                     } 
+                }
+                if (!strcmp(args[counter], ">")) {
+                    printf("i see >\n");
+                    redir++;
+                    if (!args[counter+1]) {
+                        printf("Failed redirect stdout\n");
+                        break;
+                    }
+                    else {
+                        redirout(args, counter);
+                    }
                 }
                 counter++;
             }
