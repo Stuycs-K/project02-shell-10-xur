@@ -6,6 +6,7 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include "execute.h"
+#include "redirin.h"
 
 void parse_args( char * line, char ** arg_ary ) {
     char * token = NULL;
@@ -70,24 +71,12 @@ int main(){
                 while (args[counter]) {
                     if (!strcmp(args[counter], "<")) {
                         redir++;
-                            if (!args[counter+1]) {
-                                printf("Failed redirect stdin\n");
-                                break;
-                            }
-                            else {
-                                printf("Redirecting stdin to file: %s\n", args[counter + 1]); // debug
-                            int f = open(args[counter+1], O_RDONLY);
-                            if (f==-1) {
-                                printerror();
-                                break;
-                            }
-                            int stdin_backup = dup(STDIN_FILENO);
-                            dup2(f, STDIN_FILENO);
-                            args[counter] = NULL;
-                            execute(args[0], args);
-                            dup2(stdin_backup, STDIN_FILENO);
-                            close(stdin_backup);
-                            close(f);
+                        if (!args[counter+1]) {
+                            printf("Failed redirect stdin\n");
+                            break;
+                        }
+                        else {
+                            redirin(args, counter);
                         }
                     }
                     counter++;
@@ -112,19 +101,7 @@ int main(){
                         break;
                     }
                     else {
-                        printf("Redirecting stdin to file: %s\n", args[counter + 1]); // debug
-                        int f = open(args[counter+1], O_RDONLY);
-                        if (f==-1) {
-                            printerror();
-                            break;
-                        }
-                        int stdin_backup = dup(STDIN_FILENO);
-                        dup2(f, STDIN_FILENO);
-                        args[counter] = NULL;
-                        execute(args[0], args);
-                        dup2(stdin_backup, STDIN_FILENO);
-                        close(stdin_backup);
-                        close(f);
+                        redirin(args, counter);
                     } 
                 }
                 counter++;
