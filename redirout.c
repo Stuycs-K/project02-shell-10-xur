@@ -12,13 +12,14 @@ void redirout(char ** args, int counter){
     int f = open(args[counter+1], O_WRONLY | O_TRUNC);
     if (f==-1) {
         printerror();
-        exit(1);
     }
-    int stdout_backup = dup(STDOUT_FILENO);
-    dup2(f, STDOUT_FILENO);
-    args[counter] = NULL;
-    execute(args[0], args);
-    dup2(stdout_backup, STDOUT_FILENO);
-    close(stdout_backup);
-    close(f);
+    else {
+        int stdout_backup = dup(STDOUT_FILENO);
+        dup2(f, STDOUT_FILENO);
+        args[counter] = NULL;
+        execute(args[0], args);
+        dup2(stdout_backup, STDOUT_FILENO);
+        close(stdout_backup);
+        close(f);
+    }
 }

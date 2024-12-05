@@ -12,13 +12,14 @@ void redirin(char ** args, int counter){
     int f = open(args[counter+1], O_RDONLY);
     if (f==-1) {
         printerror();
-        exit(1);
     }
-    int stdin_backup = dup(STDIN_FILENO);
-    dup2(f, STDIN_FILENO);
-    args[counter] = NULL;
-    execute(args[0], args);
-    dup2(stdin_backup, STDIN_FILENO);
-    close(stdin_backup);
-    close(f);
+    else {
+        int stdin_backup = dup(STDIN_FILENO);
+        dup2(f, STDIN_FILENO);
+        args[counter] = NULL;
+        execute(args[0], args);
+        dup2(stdin_backup, STDIN_FILENO);
+        close(stdin_backup);
+        close(f);
+    }
 }

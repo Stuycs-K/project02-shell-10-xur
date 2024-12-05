@@ -78,9 +78,10 @@ int main(){
                         }
                         else {
                             redirin(args, counter);
+                            break;
                         }
                     }
-                    if (!strcmp(args[counter], ">")) {
+                    else if (!strcmp(args[counter], ">")) {
                         printf("i see >\n");
                         redir++;
                         if (!args[counter+1]) {
@@ -89,6 +90,7 @@ int main(){
                         }
                         else {
                             redirout(args, counter);
+                            break;
                         }
                     }
                     counter++;
@@ -114,10 +116,10 @@ int main(){
                     }
                     else {
                         redirin(args, counter);
+                        break;
                     } 
                 }
-                if (!strcmp(args[counter], ">")) {
-                    printf("i see >\n");
+                else if (!strcmp(args[counter], ">")) {
                     redir++;
                     if (!args[counter+1]) {
                         printf("Failed redirect stdout\n");
@@ -125,6 +127,7 @@ int main(){
                     }
                     else {
                         redirout(args, counter);
+                        break;
                     }
                 }
                 counter++;
