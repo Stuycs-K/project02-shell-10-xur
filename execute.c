@@ -31,7 +31,7 @@ void execute(char * cmd, char ** args) {
             if (execvp(cmd, args)==-1) {
                 printerror();
             }
-        } 
+        }
         else { //parent
             wait(NULL);
         }
