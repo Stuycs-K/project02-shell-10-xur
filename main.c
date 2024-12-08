@@ -87,7 +87,6 @@ int main(){
                             }
                         }
                         else if (!strcmp(args[counter], ">")) {
-                            printf("i see >\n");
                             redir++;
                             if (!args[counter+1]) {
                                 printf("Failed redirect stdout\n");

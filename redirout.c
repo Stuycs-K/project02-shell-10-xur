@@ -8,7 +8,7 @@
 #include "execute.h"
 
 void redirout(char ** args, int counter){
-    printf("Redirecting stdout to file: %s\n", args[counter + 1]); // debug
+    //printf("Redirecting stdout to file: %s\n", args[counter + 1]); // debug
     int f = open(args[counter+1], O_WRONLY | O_TRUNC);
     if (f==-1) {
         printerror();

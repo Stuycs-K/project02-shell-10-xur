@@ -8,7 +8,7 @@
 #include "execute.h"
 
 void redirin(char ** args, int counter){
-    printf("Redirecting stdin to file: %s\n", args[counter + 1]); // debug
+    //printf("Redirecting stdin to file: %s\n", args[counter + 1]); // debug
     int f = open(args[counter+1], O_RDONLY);
     if (f==-1) {
         printerror();
