@@ -28,7 +28,7 @@ void gopipe(char * args){
       buff[i2] = token;
       i2++;
   }
-  printf(".%s. and .%s.\n", buff[0], buff[1]);
+  //printf(".%s. and .%s.\n", buff[0], buff[1]); //debug
   buff[i2] = NULL;
   FILE * fpo = (popen(buff[0], "r"));
   if (!fpo) {
