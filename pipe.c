@@ -36,7 +36,7 @@ void gopipe(char * args){
     printerror();
     pclose(fpo);
   }
-  char buffer[128];
+  char buffer[200];
   int tread;
   while ((tread = read(fileno(fpo), buffer, sizeof(buffer))) > 0) {
     if (write(fileno(fpi), buffer, tread)==-1) {

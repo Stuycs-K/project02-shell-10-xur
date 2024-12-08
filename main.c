@@ -45,19 +45,17 @@ void printascii(char * line) {
 */
 int main(){
     while (1) {
-        char cwd[100];
+        char cwd[200];
         getcwd(cwd, sizeof(cwd));
         printf("\n%s/ $ ", cwd);
         fflush(stdout);
-        char buffer[100];
+        char buffer[200];
         if (fgets(buffer, sizeof(buffer), stdin)==NULL) {
             break;
         }
         buffer[strcspn(buffer, "\n")] = '\0';
         if (strcmp(buffer, "exit") == 0) {
-            //printf("i see %s\n", buffer); //debug
-            //printascii(buffer); //debug
-            break; //weird behavior where if errno2 occurs, must type exit twice to exit. tried printing to debug but doesnt help.
+            break; 
         }
 
         //semicolon check
@@ -85,7 +83,7 @@ int main(){
                     gopipe(buffsemicolon[i2]);
                 }
                 else {
-                    char * args[16];
+                    char * args[32];
                     parse_args(buffsemicolon[i2], args);
                     int counter = 0;
                     int redir = 0;
@@ -127,7 +125,7 @@ int main(){
                 gopipe(buffer);
             }
             else {
-                char * args[16];
+                char * args[32];
                 parse_args(buffer, args);
                 int counter = 0;
                 int redir = 0;
