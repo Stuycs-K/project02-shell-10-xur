@@ -9,7 +9,12 @@
 #include "redirin.h"
 #include "redirout.h"
 #include "pipe.h"
- /*
+
+/* PARSE ARGS
+  - Takes a char * (string) and empty char ** (array of strings)
+  - Function separates the string by spaces and puts each substring into the array of strings
+  - No return value but array of strings is modified/filled
+*/
 void parse_args( char * line, char ** arg_ary ) {
     char * token = NULL;
     int counter = 0;
@@ -18,8 +23,13 @@ void parse_args( char * line, char ** arg_ary ) {
         counter++;
     } 
     arg_ary[counter] = NULL;
-} */
+} 
 
+/* PRINT ASCII
+    - Debug function, takes a char * (string)
+    - Prints ascii values corresponding to each character of the string
+    - No return value
+*/
 void printascii(char * line) {
     int counter = 0;
     while (line[counter]) {
@@ -28,6 +38,11 @@ void printascii(char * line) {
     }
 }
 
+/* MAIN
+    - No arguments
+    - While true loop ensures terminal continues running/prompting until exit or CTRL+D used
+    - Returns 0 if executed successfully.
+*/
 int main(){
     while (1) {
         char cwd[100];

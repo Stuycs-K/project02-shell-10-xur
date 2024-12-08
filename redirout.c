@@ -7,6 +7,12 @@
 #include <fcntl.h>
 #include "execute.h"
 
+/*REDIROUT
+    - Takes char ** (array of strings) and int counter
+    - Locates file to which stdout should be redirected using counter and array of strings
+    - Sets stdout as the file, then executes, then reverts stdout
+    - No return value
+*/
 void redirout(char ** args, int counter){
     //printf("Redirecting stdout to file: %s\n", args[counter + 1]); // debug
     int f = open(args[counter+1], O_WRONLY | O_TRUNC);

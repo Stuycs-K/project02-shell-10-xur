@@ -9,16 +9,13 @@
 #include "redirin.h"
 #include "redirout.h"
 
-void parse_args( char * line, char ** arg_ary ) {
-    char * token = NULL;
-    int counter = 0;
-    while ((token = strsep(&line, " "))) {
-        arg_ary[counter] = token;
-        counter++;
-    }
-    arg_ary[counter] = NULL;
-}
-
+/* GOPIPE
+  - Takes char * (string)
+  - Separates string into two pieces around the | pipe operator
+  - Executes first string command and pipes output into the input of the second string command
+  - Executes second string command
+  - No return value
+*/
 void gopipe(char * args){
   char * token = NULL;
   char * buff[3];
