@@ -8,7 +8,8 @@
 #include "execute.h"
 #include "redirin.h"
 #include "redirout.h"
-
+#include "pipe.h"
+ /*
 void parse_args( char * line, char ** arg_ary ) {
     char * token = NULL;
     int counter = 0;
@@ -17,7 +18,7 @@ void parse_args( char * line, char ** arg_ary ) {
         counter++;
     } 
     arg_ary[counter] = NULL;
-}
+} */
 
 void printascii(char * line) {
     int counter = 0;
@@ -65,8 +66,55 @@ int main(){
             buffsemicolon[i2] = NULL;
             i2 = 0;
             while (buffsemicolon[i2]) {
+                if (strstr(buffsemicolon[i2], "|")) {
+                    gopipe(buffsemicolon[i2]);
+                }
+                else {
+                    char * args[16];
+                    parse_args(buffsemicolon[i2], args);
+                    int counter = 0;
+                    int redir = 0;
+                    while (args[counter]) {
+                        if (!strcmp(args[counter], "<")) {
+                            redir++;
+                            if (!args[counter+1]) {
+                                printf("Failed redirect stdin\n");
+                                break;
+                            }
+                            else {
+                                redirin(args, counter);
+                                break;
+                            }
+                        }
+                        else if (!strcmp(args[counter], ">")) {
+                            printf("i see >\n");
+                            redir++;
+                            if (!args[counter+1]) {
+                                printf("Failed redirect stdout\n");
+                                break;
+                            }
+                            else {
+                                redirout(args, counter);
+                                break;
+                            }
+                        }
+                        counter++;
+                    }
+                    if (!redir) {
+                        execute(args[0], args);
+                    }
+                }
+            i2++;
+            }
+        }
+        else {
+            //for space separation
+            if (strstr(buffer, "|")) {
+                gopipe(buffer);
+            }
+            else {
                 char * args[16];
-                parse_args(buffsemicolon[i2], args);
+                parse_args(buffer, args);
                 int counter = 0;
                 int redir = 0;
                 while (args[counter]) {
@@ -79,10 +127,9 @@ int main(){
                         else {
                             redirin(args, counter);
                             break;
-                        }
+                        } 
                     }
                     else if (!strcmp(args[counter], ">")) {
-                        printf("i see >\n");
                         redir++;
                         if (!args[counter+1]) {
                             printf("Failed redirect stdout\n");
@@ -98,42 +145,6 @@ int main(){
                 if (!redir) {
                     execute(args[0], args);
                 }
-                i2++;
-            }
-        }
-        else {
-            //for space separation
-            char * args[16];
-            parse_args(buffer, args);
-            int counter = 0;
-            int redir = 0;
-            while (args[counter]) {
-                if (!strcmp(args[counter], "<")) {
-                    redir++;
-                    if (!args[counter+1]) {
-                        printf("Failed redirect stdin\n");
-                        break;
-                    }
-                    else {
-                        redirin(args, counter);
-                        break;
-                    } 
-                }
-                else if (!strcmp(args[counter], ">")) {
-                    redir++;
-                    if (!args[counter+1]) {
-                        printf("Failed redirect stdout\n");
-                        break;
-                    }
-                    else {
-                        redirout(args, counter);
-                        break;
-                    }
-                }
-                counter++;
-            }
-            if (!redir) {
-                execute(args[0], args);
             }
         }
     }
