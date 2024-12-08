@@ -17,6 +17,7 @@
 - If keyboard keys are pressed unintentionally and followed by 'exit,' it is necessary to repeat the process of typing 'exit' and pressing Enter three times to successfully exit. Efforts have been made to debug/remedy this issue (including with the PRINT_ASCII function) but they have not yielded conclusive results/been successful so far.
 - The echo command, when utilized in the following manner, will replicate the entire phrase (including quotation marks) in output.txt as opposed to formatting the phrase with new lines and no quotation marks:
     - echo "apple\nbanana" > output.txt
+    - * This inconsistency was identified when testing on Mac (i.e. the terminal command's behavior formatted with new lines and removed quotation marks) but it appears that this is not the case with the school systems.
 - The echo command, when utilized in the following manner, will include the backslash in output.txt as opposed to eliminating it:
     - echo apple\nbanana > output.txt
 
