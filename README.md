@@ -14,7 +14,7 @@
 
 ## Possible Bugs:
 - If keyboard keys are pressed unintentionally and followed by CTRL+D, it's necessary to hit CTRL+D twice to successfully exit.
-- If keyboard keys are pressed unintentionally and followed by 'exit', it's necessary to type exit and hit enter three times to successfully exit. There was an effort made to debug/remedy this but it has not been successful thus far.
+- If keyboard keys are pressed unintentionally and followed by 'exit,' it is necessary to repeat the process of typing 'exit' and pressing Enter three times to successfully exit. Efforts have been made to debug/remedy this issue (including with the PRINT_ASCII function) but they have not yielded conclusive results/been successful so far.
 - The echo command, when utilized in the following manner, will replicate the entire phrase (including quotation marks) in output.txt as opposed to formatting the phrase with new lines and no quotation marks:
     - echo "apple\nbanana" > output.txt
 - The echo command, when utilized in the following manner, will include the backslash in output.txt as opposed to eliminating it:
@@ -30,11 +30,11 @@
     - Command 'cd' is specially handled, otherwise commands passed into execvp
     - Forks into child and parent processes
     - No return value
-- PARSE ARGS
+- PARSE_ARGS
     - Takes a char * (string) and empty char ** (array of strings)
     - Function separates the string by spaces and puts each substring into the array of strings
     - No return value but array of strings is modified/filled
-- PRINT ASCII
+- PRINT_ASCII
     - Debug function, takes a char * (string)
     - Prints ascii values corresponding to each character of the string
     - No return value

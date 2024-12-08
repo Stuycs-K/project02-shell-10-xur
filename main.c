@@ -10,7 +10,7 @@
 #include "redirout.h"
 #include "pipe.h"
 
-/* PARSE ARGS
+/* PARSE_ARGS
   - Takes a char * (string) and empty char ** (array of strings)
   - Function separates the string by spaces and puts each substring into the array of strings
   - No return value but array of strings is modified/filled
@@ -25,7 +25,7 @@ void parse_args( char * line, char ** arg_ary ) {
     arg_ary[counter] = NULL;
 } 
 
-/* PRINT ASCII
+/* PRINT_ASCII
     - Debug function, takes a char * (string)
     - Prints ascii values corresponding to each character of the string
     - No return value
