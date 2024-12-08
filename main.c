@@ -41,7 +41,7 @@ void printascii(char * line) {
 /* MAIN
     - No arguments
     - While true loop ensures terminal continues running/prompting until exit or CTRL+D used
-    - Returns 0 if executed successfully.
+    - Returns 0 if executed successfully
 */
 int main(){
     while (1) {
